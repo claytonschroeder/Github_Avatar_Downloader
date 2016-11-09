@@ -11,10 +11,13 @@ console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
   var requestURL = 'https://' + GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
+
+
+
   var options = {
     url: requestURL,
     headers: {
-      'User-Agent': 'something else',
+      'User-Agent': 'git-hub avatar downloader', //assigns a value to User-Agent property in order to meet GitHubs's admin rules
     }
   }
 
@@ -22,9 +25,13 @@ function getRepoContributors(repoOwner, repoName, cb) {
     if (err) throw err;
     console.log("Response status code: " + response.statusCode);
     console.log("Response message: " + response.statusMessage);
+    if (response.statusMessage === 'Not Found') {
+      console.log("Invalid Username")
+    }
     gitData = JSON.parse(body);
     cb(gitData);
   });
+    return;
 };
 
 getRepoContributors(repoOwner, repoName, function(result) {
